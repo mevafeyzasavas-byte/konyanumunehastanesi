@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f3f6f7">
+<title>Konya Numune Hastanesi</title>
+<style>
+:root{
+  --bg:#f3f6f7;
+  --fg:#0e1f2b;
+  --card:#ffffff;
+  --mu:#667985;
+  --bd:#e3e9ec;
+  --hover:#f0f5f6;
+  --ac:#0a6e78;
+  --field:#e8eef0;
+  --tile-fg:#ffffff;
+  --shadow:0 1px 2px rgba(14,31,43,.04),0 8px 28px rgba(14,31,43,.06);
+  --A:#0a7285;--B:#4057d6;--C:#b45f06;--M:#b8225a;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme=light]){
+    --bg:#0b1419;
+    --fg:#e9f1f5;
+    --card:#131e25;
+    --mu:#8ca1ae;
+    --bd:#223039;
+    --hover:#192832;
+    --ac:#5cc4d0;
+    --field:#192832;
+    --tile-fg:#0b1419;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.3);
+    --A:#5cc4d6;--B:#8fa1ff;--C:#f0a64d;--M:#f27aa6;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  margin:0;
+  padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  -webkit-text-size-adjust:100%;
+  font:16px/1.45 "Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--fg);
+  min-height:100vh;
+}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px}
+
+/* Üst alan */
+.top{
+  position:sticky;top:0;z-index:5;
+  background:var(--bg);
+  padding-top:max(18px,env(safe-area-inset-top));
+  padding-bottom:12px;
+}
+.brand{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.logo{
+  flex:none;width:38px;height:38px;border-radius:11px;
+  background:var(--ac);display:grid;place-items:center;
+}
+.logo svg{width:20px;height:20px;fill:var(--tile-fg)}
+h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+
+.search{position:relative}
+.search .ico{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  width:19px;height:19px;stroke:var(--mu);fill:none;stroke-width:2;stroke-linecap:round;pointer-events:none;
+}
+#q{
+  width:100%;height:50px;
+  padding:0 46px 0 46px;
+  font:inherit;font-size:16px;
+  color:var(--fg);
+  background:var(--card);
+  border:1.5px solid var(--bd);
+  border-radius:14px;
+  outline:none;
+  box-shadow:var(--shadow);
+  transition:border-color .15s;
+}
+#q::placeholder{color:var(--mu)}
+#q:focus{border-color:var(--ac)}
+#clear{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:30px;height:30px;border:0;border-radius:50%;
+  background:var(--field);cursor:pointer;
+  display:none;place-items:center;padding:0;
+}
+#clear.show{display:grid}
+#clear svg{width:12px;height:12px;stroke:var(--mu);stroke-width:2.4;stroke-linecap:round;fill:none}
+
+/* Liste */
+.panel{
+  background:var(--card);
+  border:1px solid var(--bd);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin-bottom:28px;
+}
+.floor-head{
+  margin:0;
+  padding:14px 18px 8px;
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:-.01em;
+  color:var(--fg);
+  background:var(--card);
+  border-top:1px solid var(--bd);
+}
+.floor-head:first-child{border-top:0}
+
+.row{
+  width:100%;
+  display:flex;align-items:center;gap:14px;
+  padding:12px 18px;
+  background:none;border:0;
+  border-top:1px solid var(--bd);
+  text-align:left;cursor:pointer;
+  transition:background .12s;
+}
+.floor-head + .row{border-top:0}
+.row:hover{background:var(--hover)}
+.row:active{background:var(--field)}
+.tile{
+  flex:none;
+  width:38px;height:38px;border-radius:11px;
+  display:grid;place-items:center;
+  font-weight:700;font-size:16px;
+  color:var(--tile-fg);
+  background:var(--bc);
+}
+[data-b=A]{--bc:var(--A)}
+[data-b=B]{--bc:var(--B)}
+[data-b=C]{--bc:var(--C)}
+[data-b=M]{--bc:var(--M)}
+.tile.long{font-size:13px;letter-spacing:-.02em}
+.where .tile.long{font-size:19px}
+.txt{flex:1;min-width:0}
+.name{display:block;font-size:15.5px;font-weight:600;letter-spacing:-.01em;line-height:1.35}
+.loc{display:block;font-size:14.5px;color:var(--mu);margin-top:2px}
+.loc b{color:var(--fg);font-weight:600}
+.chev{flex:none;width:16px;height:16px;stroke:var(--mu);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
+mark{background:#ffe27a;color:#1a1400;border-radius:3px;padding:0 1px}
+
+.empty{padding:44px 20px;text-align:center;color:var(--mu);font-size:15px}
+
+/* Detay */
+.back{
+  display:inline-flex;align-items:center;gap:6px;
+  height:40px;padding:0 14px 0 10px;margin:4px 0 14px;
+  background:var(--card);border:1px solid var(--bd);border-radius:12px;
+  font-size:14px;font-weight:600;cursor:pointer;
+}
+.back svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.hero{
+  background:var(--card);
+  border:1px solid var(--bd);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:22px 20px;
+  margin-bottom:22px;
+  position:relative;overflow:hidden;
+}
+.hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--bc)}
+.hero h2{margin:0 0 18px;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.where{display:flex;align-items:center;gap:14px}
+.where .tile{width:56px;height:56px;border-radius:16px;font-size:26px}
+.where .b{font-size:18px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.where .f{font-size:15px;color:var(--mu);margin-top:3px}
+.sec{margin:0 0 10px 4px;font-size:17px;font-weight:700;letter-spacing:-.01em;color:var(--fg)}
+.sec-gap{margin-top:0}
+.row .tag{
+  flex:none;min-width:64px;
+  font-size:14px;font-weight:700;color:var(--bc);
+}
+[hidden]{display:none!important}
+
+@media(max-width:600px){
+  .wrap{padding:0 14px}
+  h1{font-size:19px}
+  .row{padding:12px 14px}
+  .floor-head{padding:12px 14px 8px}
+}
+@media(prefers-reduced-motion:no-preference){
+  #detail{animation:in .18s ease-out}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></div>
+      <h1>Konya Numune Hastanesi</h1>
+    </div>
+    <div class="search">
+      <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Poliklinik veya birim ara" autocomplete="off" spellcheck="false" enterkeyhint="search">
+      <button id="clear" aria-label="Temizle"><svg viewBox="0 0 12 12"><path d="M1 1l10 10M11 1 1 11"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div id="list" class="panel"></div>
+  <div id="detail" hidden></div>
+</main>
+
+<script>
+// ===== DÜZENLENEBİLİR VERİ =====
+const BLOCKS={
+  "A":{ad:"A Blok",floors:{
+    "Zemin":["Laboratuvarlar ve Kan Alma","Radyoloji (Röntgen, Tomografi, MR, Ultrason)","GETAT (Geleneksel ve Tamamlayıcı Tıp)","Evde Sağlık Hizmetleri Merkezi"],
+    "1. Kat":["Kardiyoloji (Kalp Hastalıkları Merkezi)","İç Hastalıkları (Dahiliye)","Göğüs Hastalıkları","Nöroloji","Enfeksiyon Hastalıkları"],
+    "2. Kat":["Endokrinoloji ve Metabolizma","Nefroloji","Hematoloji","Ruh Sağlığı ve Hastalıkları (Psikiyatri)","Deri ve Zührevi Hastalıklar (Cildiye)","Fiziksel Tıp ve Rehabilitasyon"],
+    "Üst katlar":["Yataklı hasta servisleri"]
+  }},
+  "C":{ad:"C Blok",floors:{
+    "Bilgi":["Sol koridor (A ve C Blok) birimleri için A Blok kaydına bakın"]
+  }},
+  "M":{ad:"Merkez Kule",floors:{
+    "2. Kat":["Merkezi Yoğun Bakım: Dahili, Genel ve KVC Yoğun Bakım (toplam 96 yatak)"],
+    "3. Kat":["Ameliyathaneler (16 oda)"],
+    "Üst katlar":["Yataklı hasta servisleri (tek ve çift kişilik odalar)"]
+  }},
+  "B":{ad:"B Blok",floors:{
+    "Zemin":["Acil Servis (kayıt ve müşahede alanları)","Acil Yoğun Bakım Ünitesi","Palyatif Bakım Merkezi (yataklı servis girişi)"],
+    "1. Kat":["Göz Hastalıkları (Göz Bankası ve göz tetkik odaları)","Genel Cerrahi","Üroloji","Plastik, Rekonstrüktif ve Estetik Cerrahi"],
+    "2. Kat":["Ortopedi ve Travmatoloji","Kulak Burun Boğaz (KBB)","Beyin ve Sinir Cerrahisi","Göğüs Cerrahisi","Kalp ve Damar Cerrahisi (KVC)","Gastroenteroloji Cerrahisi","Cerrahi Onkoloji"],
+    "Üst katlar":["Yataklı hasta servisleri"]
+  }}
+};
+// ================================
+
+const $=s=>document.querySelector(s);
+const qInput=$("#q"),clearBtn=$("#clear"),list=$("#list"),detail=$("#detail");
+
+const IDX=[];
+for(const k in BLOCKS)
+  for(const f in BLOCKS[k].floors)
+    BLOCKS[k].floors[f].forEach(d=>IDX.push({k,f,d}));
+
+const FLOOR_ORDER=["Zemin","1. Kat","2. Kat","3. Kat","4. Kat","5. Kat","Üst katlar","Bilgi"];
+const floorRank=f=>{const i=FLOOR_ORDER.indexOf(f);return i===-1?99:i;};
+
+// Türkçe karakterden bağımsız arama (dis → diş); uzunluk korunur
+const MAP={"ı":"i","ş":"s","ğ":"g","ü":"u","ö":"o","ç":"c","â":"a","î":"i","û":"u"};
+const fold=s=>s.toLocaleLowerCase("tr").replace(/[ışğüöçâîû]/g,c=>MAP[c]);
+
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function hi(text,q){
+  if(!q)return esc(text);
+  const i=fold(text).indexOf(q);
+  if(i===-1)return esc(text);
+  return esc(text.slice(0,i))+"<mark>"+esc(text.slice(i,i+q.length))+"</mark>"+esc(text.slice(i+q.length));
+}
+
+const code=(k,f)=>{
+  if(f==="Zemin")return k+"-Z";
+  const m=/^(\d+)\. Kat$/.exec(f);
+  return m?k+"-"+m[1]:k;
+};
+const tile=(k,f)=>{const c=code(k,f);return `<span class="tile${c.length>1?" long":""}">${c}</span>`;};
+const CHEV='<svg class="chev" viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg>';
+
+function row(i,q,showFloor){
+  const sub=showFloor
+    ? `<span class="loc"><b>${esc(BLOCKS[i.k].ad)}</b> · ${esc(i.f)}</span>`
+    : `<span class="loc">${esc(BLOCKS[i.k].ad)}</span>`;
+  return `<button class="row" data-b="${i.k}" data-k="${i.k}" data-f="${esc(i.f)}" data-d="${esc(i.d)}">
+    ${tile(i.k,i.f)}
+    <span class="txt"><span class="name">${hi(i.d,q)}</span>${sub}</span>${CHEV}
+  </button>`;
+}
+
+function bindRows(root){
+  root.querySelectorAll(".row").forEach(el=>{
+    el.onclick=()=>showDetail(el.dataset.k,el.dataset.f,el.dataset.d);
+  });
+}
+
+function showList(){
+  detail.hidden=true;
+  list.hidden=false;
+}
+
+function renderHome(){
+  showList();
+  const groups={};
+  IDX.forEach(i=>(groups[i.f]=groups[i.f]||[]).push(i));
+  let html="";
+  Object.keys(groups).sort((a,b)=>floorRank(a)-floorRank(b)).forEach(f=>{
+    html+=`<h3 class="floor-head">${esc(f)}</h3>`;
+    groups[f].sort((a,b)=>a.d.localeCompare(b.d,"tr")).forEach(i=>html+=row(i,"",false));
+  });
+  list.innerHTML=html;
+  bindRows(list);
+}
+
+function renderSearch(raw){
+  showList();
+  const q=fold(raw.trim());
+  const found=IDX.filter(i=>fold(i.d).includes(q));
+  if(!found.length){
+    list.innerHTML=`<div class="empty">Sonuç bulunamadı</div>`;
+    return;
+  }
+  found.sort((a,b)=>a.d.localeCompare(b.d,"tr")||floorRank(a.f)-floorRank(b.f));
+  list.innerHTML=found.map(i=>row(i,q,true)).join("");
+  bindRows(list);
+}
+
+function showDetail(k,f,d){
+  const b=BLOCKS[k];
+  const same=b.floors[f].filter(x=>x!==d).map(x=>({k,f,d:x}));
+  const others=[];
+  for(const of in b.floors) if(of!==f) b.floors[of].forEach(x=>others.push({k,f:of,d:x}));
+  others.sort((a,c)=>floorRank(a.f)-floorRank(c.f)||a.d.localeCompare(c.d,"tr"));
+
+  const mini=(i,tag)=>`<button class="row" data-b="${i.k}" data-k="${i.k}" data-f="${esc(i.f)}" data-d="${esc(i.d)}">
+    ${tag?`<span class="tag">${esc(i.f)}</span>`:""}
+    <span class="txt"><span class="name">${esc(i.d)}</span></span>${CHEV}</button>`;
+
+  let html=`<button class="back" id="back"><svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg>Geri</button>
+    <section class="hero" data-b="${k}">
+      <h2>${esc(d)}</h2>
+      <div class="where">${tile(k,f)}
+        <div><div class="b">${esc(b.ad)}</div><div class="f">${esc(f)}</div></div></div>
+    </section>`;
+  if(same.length) html+=`<p class="sec">Aynı katta</p><div class="panel">${same.map(i=>mini(i,false)).join("")}</div>`;
+  if(others.length) html+=`<p class="sec">${esc(b.ad)} · diğer katlar</p><div class="panel">${others.map(i=>mini(i,true)).join("")}</div>`;
+
+  detail.innerHTML=html;
+  list.hidden=true;
+  detail.hidden=false;
+  bindRows(detail);
+  $("#back").onclick=goBack;
+  window.scrollTo(0,0);
+}
+
+function goBack(){
+  if(qInput.value.trim()) renderSearch(qInput.value); else renderHome();
+  window.scrollTo(0,0);
+}
+
+qInput.addEventListener("input",()=>{
+  const v=qInput.value;
+  clearBtn.classList.toggle("show",v.length>0);
+  v.trim()?renderSearch(v):renderHome();
+});
+clearBtn.addEventListener("click",()=>{
+  qInput.value="";
+  clearBtn.classList.remove("show");
+  renderHome();
+  qInput.focus();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&!detail.hidden) goBack();
+});
+
+renderHome();
+</script>
+</body>
+</html>
